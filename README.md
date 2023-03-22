@@ -1,2 +1,2 @@
-# Chess
-A Repo for creating chess!
+# Next
+A Repo for creating next apps!
