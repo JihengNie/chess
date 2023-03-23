@@ -6,11 +6,10 @@ export default function CreateButton() {
   let [createButton, setCreateButton] = useState(false)
 
   const handleCreateButtonClick = () => {
-    console.log('createButton', createButton)
     setCreateButton(!createButton)
   }
 
-  const createButtonClicked = <ExampleModel status={setCreateButton}/>
+  const createButtonClicked = <ExampleModel handleCreateButtonClick={handleCreateButtonClick}/>
 
   return (
     <div>
