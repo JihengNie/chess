@@ -1,6 +1,5 @@
 import Head from "next/head"
-import Board from "./components/board"
-import TextButton from "./components/textButton"
+import Box from "./components/box"
 
 export default function Home() {
   return (
@@ -10,11 +9,7 @@ export default function Home() {
         <link rel="icon" href="/imgs/favicon.ico" />
       </Head>
 
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
-      <Board title='Some title' subtitle='String' />
-      <TextButton/>
+      <Box/>
     </div>
 
   )
