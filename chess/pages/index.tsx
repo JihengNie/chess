@@ -1,5 +1,6 @@
 import Head from "next/head"
 import Box from "./components/box"
+import Board from "./components/board"
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       </Head>
 
       <Box/>
+      <Board turn='Red'/>
     </div>
 
   )
