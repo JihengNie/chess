@@ -1,5 +1,4 @@
 import Head from "next/head"
-import Box from "./components/box"
 import Board from "./components/board"
 
 export default function Home() {
@@ -10,7 +9,6 @@ export default function Home() {
         <link rel="icon" href="/imgs/favicon.ico" />
       </Head>
 
-      <Box/>
       <Board turn='White'/>
     </div>
 

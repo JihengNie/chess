@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 export default function Box() {
   let [pieceValue, setPieceValue] = useState(0)
 
-  function handlePieceClick(event) {
+  function handlePieceClick(event: any) {
     console.log(event.target)
     setPieceValue(pieceValue + 1)
   }
