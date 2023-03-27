@@ -19,9 +19,12 @@ class Board extends Component<BoardProps, MyState> {
   }
 
 
- handleButtonClick(event) {
+ handleButtonClick(event: any) {
    console.log(event.target.textContent)
-   console.log(event.target)
+   console.log(event.target.id)
+   let [location, piece] = event.target.id.split(' ')
+   event.target.id = location + 'WTF Sherrel'
+   event.target.textContent = 'WTF Sherrel'
 }
 
   render() {
@@ -33,7 +36,8 @@ class Board extends Component<BoardProps, MyState> {
     for (let i = 0; i < 8; i++) {
       const tempRow = []
       for (let j = 0; j < 8; j++) {
-        tempRow.push(<div id={(j + i.toString())} onClick={this.handleButtonClick} className='basis-1/8'> {board![i][j] === 'Empty' ? 'Empty' : board![i][j]} </div>)
+        const pieceContent = board![i][j] === 'Empty' ? 'Empty' : board![i][j].toString()
+        tempRow.push(<div id={`${j + i.toString()} ${pieceContent}`} onClick={this.handleButtonClick} className='basis-1/8' > {pieceContent} </div>)
       }
       rowDivArray.push(tempRow)
     }
@@ -46,7 +50,6 @@ class Board extends Component<BoardProps, MyState> {
         ))}
       </div>
     );
-
 
     return (
       <>
