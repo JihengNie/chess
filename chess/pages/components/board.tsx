@@ -20,15 +20,21 @@ class Board extends Component<BoardProps, MyState> {
 
 
  handleButtonClick(event: any) {
-   console.log(event.target.textContent)
-   console.log(event.target.id)
-   let [location, piece] = event.target.id.split(' ')
-   event.target.id = location + 'WTF Sherrel'
-   event.target.textContent = 'WTF Sherrel'
+   console.log('TEXT CONTENT',event.target.textContent)
+   console.log('ID',event.target.id)
+   let [currLocation, piece] = event.target.id.split(' ')
+   console.log('Current Location',currLocation[0] + currLocation[1])
+   console.log('Board Location Matrix',this.state.board![currLocation[0]][currLocation[1]])
+
+
+   const newBoard = [...this.state.board!]
+   console.log('NewBoard', newBoard)
+   newBoard[currLocation[0]][currLocation[1]] = 'WHAT?'
+   this.setState({ board: newBoard})
+
 }
 
   render() {
-
     const { turn } = this.props;
     const { board } = this.state
 
@@ -37,17 +43,14 @@ class Board extends Component<BoardProps, MyState> {
       const tempRow = []
       for (let j = 0; j < 8; j++) {
         const pieceContent = board![i][j] === 'Empty' ? 'Empty' : board![i][j].toString()
-        tempRow.push(<div id={`${j + i.toString()} ${pieceContent}`} onClick={this.handleButtonClick} className='basis-1/8' > {pieceContent} </div>)
+        tempRow.push(<div id={`${i + j.toString()} ${pieceContent}`} onClick={this.handleButtonClick} className='basis-1/8' > {pieceContent} </div>)
       }
       rowDivArray.push(tempRow)
     }
 
-    const reversedRowDivArray = rowDivArray.reverse()
     const htmlBoard = (
-      <div>
-        {reversedRowDivArray.map((rowDiv, index) => (
-          <div id={index.toString()} key={index} className='grid grid-cols-8 content-center text-center'>{rowDiv}</div>
-        ))}
+      <div className='grid grid-cols-8 content-center text-center'>
+        {rowDivArray}
       </div>
     );
 
@@ -63,16 +66,19 @@ class Board extends Component<BoardProps, MyState> {
 export default Board;
 
 function createNewArrayOfBoard() {
-  const empty = [] = new Array(8).fill('Empty');
+  const empty1 = [] = new Array(8).fill('Empty');
+  const empty2 = [] = new Array(8).fill('Empty');
+  const empty3 = [] = new Array(8).fill('Empty');
+  const empty4 = [] = new Array(8).fill('Empty');
   const whitePawn = [] = new Array(8).fill('w-pawn');
   const blackPawn = [] = new Array(8).fill('b-pawn');
   const arrayBoard = [
     ['w-rook', 'w-knight', 'w-bishop', 'w-queen', 'w-king', 'w-bishop', 'w-knight', 'w-rook',],
     whitePawn,
-    empty,
-    empty,
-    empty,
-    empty,
+    empty1,
+    empty2,
+    empty3,
+    empty4,
     blackPawn,
     ['b-rook', 'b-knight', 'b-bishop', 'b-queen', 'b-king', 'b-bishop', 'b-knight', 'b-rook',],
   ]
