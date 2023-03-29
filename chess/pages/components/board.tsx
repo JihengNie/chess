@@ -16,8 +16,14 @@ class Board extends Component<BoardProps, MyState> {
       board: createNewArrayOfBoard()
     }
     this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.handleBlackKnightMove = this.handleBlackKnightMove.bind(this);
   }
 
+  handleBlackKnightMove(event: any) {
+    let [currLocation, piece] = event.target.id.split(' ')
+    const newBoard = [...this.state.board!]
+    newBoard[currLocation[0]][currLocation[1]] = 'WHAT?'
+  }
 
  handleButtonClick(event: any) {
    console.log('TEXT CONTENT',event.target.textContent)
