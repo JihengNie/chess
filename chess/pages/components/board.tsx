@@ -5,7 +5,9 @@ interface BoardProps {
 }
 
 type MyState = {
-  board?: string[][]
+  board?: string[][],
+  piece?: string,
+  potentialSpaces: number[][]
 }
 
 class Board extends Component<BoardProps, MyState> {
@@ -13,7 +15,9 @@ class Board extends Component<BoardProps, MyState> {
     super(props)
 
     this.state = {
-      board: createNewArrayOfBoard()
+      board: createNewArrayOfBoard(),
+      piece: '',
+      potentialSpaces: [[]]
     }
     this.handleButtonClick = this.handleButtonClick.bind(this);
     this.handleBlackKnightMove = this.handleBlackKnightMove.bind(this);
@@ -22,11 +26,30 @@ class Board extends Component<BoardProps, MyState> {
   handleBlackKnightMove(event: any) {
     let [currLocation, piece] = event.target.id.split(' ')
     const newBoard = [...this.state.board!]
-    newBoard[currLocation[0]][currLocation[1]] = 'WHAT?'
-    const potentialSpaces = []
-    let xDirection =[
-      newBoard
+    console.log('TEXT CONTENT', event.target.textContent)
+    console.log('ID', event.target.id)
+    const yDirection = +currLocation[0]
+    const xDirection = +currLocation[1]
+    console.log(typeof yDirection)
+    // Setting Current space to null
+    newBoard[yDirection][xDirection] = 'Empty'
+
+    // Generating Potential Spaces
+    const potentialSpaces = [
+      checkCordsWithinBoard(yDirection - 2, xDirection + 1) ? [yDirection - 2, xDirection + 1] : null,
+      checkCordsWithinBoard(yDirection - 1, xDirection + 2) ? [yDirection - 1, xDirection + 2] : null,
+      checkCordsWithinBoard(yDirection + 1, xDirection + 2) ? [yDirection + 1, xDirection + 2] : null,
+      checkCordsWithinBoard(yDirection + 2, xDirection + 1) ? [yDirection + 2, xDirection + 1] : null,
+      checkCordsWithinBoard(yDirection - 2, xDirection - 1) ? [yDirection - 2, xDirection - 1] : null,
+      checkCordsWithinBoard(yDirection - 1, xDirection - 2) ? [yDirection - 1, xDirection - 2] : null,
+      checkCordsWithinBoard(yDirection + 1, xDirection - 2) ? [yDirection + 1, xDirection - 2] : null,
+      checkCordsWithinBoard(yDirection + 2, xDirection - 1) ? [yDirection + 2, xDirection - 1] : null
     ]
+    console.log('potentialSpaces', potentialSpaces)
+    // Checking if the piece can move there
+    for (let coordinates in potentialSpaces) {
+      console.log(potentialSpaces[coordinates])
+    }
   }
 
  handleButtonClick(event: any) {
@@ -53,7 +76,7 @@ class Board extends Component<BoardProps, MyState> {
       const tempRow = []
       for (let j = 0; j < 8; j++) {
         const pieceContent = board![i][j] === 'Empty' ? 'Empty' : board![i][j].toString()
-        tempRow.push(<div id={`${i + j.toString()} ${pieceContent}`} onClick={this.handleButtonClick} className='basis-1/8' > {pieceContent} </div>)
+        tempRow.push(<div id={`${i + j.toString()} ${pieceContent}`} onClick={this.handleBlackKnightMove} className='basis-1/8' > {pieceContent} </div>)
       }
       rowDivArray.push(tempRow)
     }
@@ -93,4 +116,12 @@ function createNewArrayOfBoard() {
     ['b-rook', 'b-knight', 'b-bishop', 'b-queen', 'b-king', 'b-bishop', 'b-knight', 'b-rook',],
   ]
   return arrayBoard
+}
+
+function checkCordsWithinBoard(xDirection: number, yDirection: number ) {
+  if (xDirection >= 0 && xDirection <= 7 && yDirection >= 0 && yDirection <= 7 ) {
+    return true
+  } else {
+    return false
+  }
 }
