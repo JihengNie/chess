@@ -23,6 +23,10 @@ class Board extends Component<BoardProps, MyState> {
     let [currLocation, piece] = event.target.id.split(' ')
     const newBoard = [...this.state.board!]
     newBoard[currLocation[0]][currLocation[1]] = 'WHAT?'
+    const potentialSpaces = []
+    let xDirection =[
+      newBoard
+    ]
   }
 
  handleButtonClick(event: any) {
