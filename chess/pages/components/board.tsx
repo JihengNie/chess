@@ -7,7 +7,8 @@ interface BoardProps {
 type MyState = {
   board?: string[][],
   piece?: string,
-  potentialSpaces: number[][]
+  potentialSpaces: (number[] | null)[],
+  currentLocation: number[]
 }
 
 class Board extends Component<BoardProps, MyState> {
@@ -17,20 +18,31 @@ class Board extends Component<BoardProps, MyState> {
     this.state = {
       board: createNewArrayOfBoard(),
       piece: '',
-      potentialSpaces: [[]]
+      potentialSpaces: [[]],
+      currentLocation: []
     }
     this.handleButtonClick = this.handleButtonClick.bind(this);
     this.handleBlackKnightMove = this.handleBlackKnightMove.bind(this);
+    this.handlePieceClick = this.handlePieceClick.bind(this)
+  }
+
+  handlePieceClick(event: any) {
+    let [currLocation, piece] = event.target.id.split(' ')
+    const yDirection = +currLocation[0]
+    const xDirection = +currLocation[1]
+    const pieceLocation = [yDirection, xDirection]
+    this.setState({ piece: piece,
+      currentLocation: pieceLocation
+    })
   }
 
   handleBlackKnightMove(event: any) {
-    let [currLocation, piece] = event.target.id.split(' ')
+    let [currLocation, piece ] = event.target.id.split(' ')
     const newBoard = [...this.state.board!]
-    console.log('TEXT CONTENT', event.target.textContent)
-    console.log('ID', event.target.id)
+
     const yDirection = +currLocation[0]
     const xDirection = +currLocation[1]
-    console.log(typeof yDirection)
+    const pieceLocation = [yDirection, xDirection]
     // Setting Current space to null
     newBoard[yDirection][xDirection] = 'Empty'
 
@@ -45,11 +57,11 @@ class Board extends Component<BoardProps, MyState> {
       checkCordsWithinBoard(yDirection + 1, xDirection - 2) ? [yDirection + 1, xDirection - 2] : null,
       checkCordsWithinBoard(yDirection + 2, xDirection - 1) ? [yDirection + 2, xDirection - 1] : null
     ]
-    console.log('potentialSpaces', potentialSpaces)
-    // Checking if the piece can move there
-    for (let coordinates in potentialSpaces) {
-      console.log(potentialSpaces[coordinates])
-    }
+    this.setState({
+      board: newBoard,
+      piece: piece,
+      currentLocation: pieceLocation,
+      potentialSpaces: potentialSpaces })
   }
 
  handleButtonClick(event: any) {
@@ -68,6 +80,7 @@ class Board extends Component<BoardProps, MyState> {
 }
 
   render() {
+    console.log(this.state)
     const { turn } = this.props;
     const { board } = this.state
 
