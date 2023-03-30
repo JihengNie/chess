@@ -6,7 +6,7 @@ interface BoardProps {
 
 type MyState = {
   board?: string[][],
-  piece?: string,
+  piece?: string | undefined,
   potentialSpaces: (number[] | null)[],
   currentLocation: number[]
 }
@@ -21,33 +21,41 @@ class Board extends Component<BoardProps, MyState> {
       potentialSpaces: [[]],
       currentLocation: []
     }
-    this.handleButtonClick = this.handleButtonClick.bind(this);
-    this.handleBlackKnightMove = this.handleBlackKnightMove.bind(this);
+    this.handlePiecePotentialSpaces = this.handlePiecePotentialSpaces.bind(this);
     this.handlePieceClick = this.handlePieceClick.bind(this)
   }
 
   handlePieceClick(event: any) {
-    let [currLocation, piece] = event.target.id.split(' ')
-    const yDirection = +currLocation[0]
-    const xDirection = +currLocation[1]
-    const pieceLocation = [yDirection, xDirection]
-    this.setState({ piece: piece,
-      currentLocation: pieceLocation
+    const { piece, currentLocation, potentialSpaces } = this.state
+    const yDirection = +currentLocation[0]
+    const xDirection = +currentLocation[1]
+    const [ newCords ] = event.target.id.split(' ')
+    const newY = +newCords[0]
+    const newX = +newCords[1]
+    const newLocation = [newY, newX]
+    const newBoard = [...this.state.board!]
+
+    if (JSON.stringify(newLocation) === JSON.stringify(currentLocation) && checkItemInArray(potentialSpaces, newLocation)) {
+      // Setting Current space to null
+      newBoard[yDirection][xDirection] = 'Empty'
+      newBoard[newY][newX] = piece!
+    }
+    this.setState({ board: newBoard,
+      piece: '',
+      potentialSpaces: [[]],
+      currentLocation: []
     })
   }
 
-  handleBlackKnightMove(event: any) {
+  handlePiecePotentialSpaces(event: any) {
     let [currLocation, piece ] = event.target.id.split(' ')
-    const newBoard = [...this.state.board!]
 
     const yDirection = +currLocation[0]
     const xDirection = +currLocation[1]
     const pieceLocation = [yDirection, xDirection]
-    // Setting Current space to null
-    newBoard[yDirection][xDirection] = 'Empty'
 
-    // Generating Potential Spaces
-    const potentialSpaces = [
+    // Generating Potential Spaces for Knight
+    let potentialSpaces = [
       checkCordsWithinBoard(yDirection - 2, xDirection + 1) ? [yDirection - 2, xDirection + 1] : null,
       checkCordsWithinBoard(yDirection - 1, xDirection + 2) ? [yDirection - 1, xDirection + 2] : null,
       checkCordsWithinBoard(yDirection + 1, xDirection + 2) ? [yDirection + 1, xDirection + 2] : null,
@@ -57,27 +65,12 @@ class Board extends Component<BoardProps, MyState> {
       checkCordsWithinBoard(yDirection + 1, xDirection - 2) ? [yDirection + 1, xDirection - 2] : null,
       checkCordsWithinBoard(yDirection + 2, xDirection - 1) ? [yDirection + 2, xDirection - 1] : null
     ]
+    potentialSpaces = potentialSpaces.filter(n => n)
     this.setState({
-      board: newBoard,
       piece: piece,
       currentLocation: pieceLocation,
       potentialSpaces: potentialSpaces })
   }
-
- handleButtonClick(event: any) {
-   console.log('TEXT CONTENT',event.target.textContent)
-   console.log('ID',event.target.id)
-   let [currLocation, piece] = event.target.id.split(' ')
-   console.log('Current Location',currLocation[0] + currLocation[1])
-   console.log('Board Location Matrix',this.state.board![currLocation[0]][currLocation[1]])
-
-
-   const newBoard = [...this.state.board!]
-   console.log('NewBoard', newBoard)
-   newBoard[currLocation[0]][currLocation[1]] = 'WHAT?'
-   this.setState({ board: newBoard})
-
-}
 
   render() {
     console.log(this.state)
@@ -89,13 +82,13 @@ class Board extends Component<BoardProps, MyState> {
       const tempRow = []
       for (let j = 0; j < 8; j++) {
         const pieceContent = board![i][j] === 'Empty' ? 'Empty' : board![i][j].toString()
-        tempRow.push(<div id={`${i + j.toString()} ${pieceContent}`} onClick={this.handleBlackKnightMove} className='basis-1/8' > {pieceContent} </div>)
+        tempRow.push(<div id={`${i + j.toString()} ${pieceContent}`} onClick={this.handlePiecePotentialSpaces} className='basis-1/8' > {pieceContent} </div>)
       }
       rowDivArray.push(tempRow)
     }
 
     const htmlBoard = (
-      <div className='grid grid-cols-8 content-center text-center'>
+      <div onClick={this.handlePieceClick} className='grid grid-cols-8 content-center text-center'>
         {rowDivArray}
       </div>
     );
@@ -136,5 +129,15 @@ function checkCordsWithinBoard(xDirection: number, yDirection: number ) {
     return true
   } else {
     return false
+  }
+}
+
+function checkItemInArray(arr: (number[] | null)[], item: number[]) {
+  for (let index in arr) {
+    if (JSON.stringify(item) === JSON.stringify(arr[index])) {
+      return true
+    } else {
+      return false
+    }
   }
 }
