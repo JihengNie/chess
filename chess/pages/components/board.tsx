@@ -88,7 +88,7 @@ class Board extends Component<BoardProps, MyState> {
     }
 
     const htmlBoard = (
-      <div onClick={this.handlePieceClick} className='grid grid-cols-8 content-center text-center'>
+      <div className='grid grid-cols-8 content-center text-center'>
         {rowDivArray}
       </div>
     );
@@ -96,7 +96,7 @@ class Board extends Component<BoardProps, MyState> {
     return (
       <>
         <h1 className='text-center text-2xl'>{turn}</h1>
-        <div>{htmlBoard}</div>
+        <div onClick={this.handlePieceClick} >{htmlBoard}</div>
       </>
     );
   }
