@@ -75,7 +75,7 @@ class Board extends Component<BoardProps, MyState> {
   render() {
     console.log(this.state)
     const { turn } = this.props;
-    const { board } = this.state
+    const { board, piece, potentialSpaces} = this.state
 
     const rowDivArray = []
     for (let i = 0; i < 8; i++) {
@@ -85,6 +85,16 @@ class Board extends Component<BoardProps, MyState> {
         tempRow.push(<div id={`${i + j.toString()} ${pieceContent}`} onClick={this.handlePiecePotentialSpaces} className='basis-1/8' > {pieceContent} </div>)
       }
       rowDivArray.push(tempRow)
+    }
+
+    const potentialSpacesDivArray = []
+    for (let i = 0; i < 8; i++) {
+      const tempRow = []
+      for (let j = 0; j < 8; j++) {
+        const pieceContent = board![i][j] === 'Empty' ? 'Empty' : board![i][j].toString()
+        tempRow.push(<div id={`${i + j.toString()} ${pieceContent}`} onClick={this.handlePiecePotentialSpaces} className='basis-1/8' > {pieceContent} </div>)
+      }
+      potentialSpacesDivArray.push(tempRow)
     }
 
     const htmlBoard = (
