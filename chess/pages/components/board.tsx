@@ -56,22 +56,95 @@ class Board extends Component<BoardProps, MyState> {
     const xDirection = +currLocation[1]
     const pieceLocation = [yDirection, xDirection]
 
+    let potentialSpaces: any = []
+
     // Generating Potential Spaces for Knight
-    let potentialSpaces = [
-      checkCordsWithinBoard(yDirection - 2, xDirection + 1) ? [yDirection - 2, xDirection + 1] : null,
-      checkCordsWithinBoard(yDirection - 1, xDirection + 2) ? [yDirection - 1, xDirection + 2] : null,
-      checkCordsWithinBoard(yDirection + 1, xDirection + 2) ? [yDirection + 1, xDirection + 2] : null,
-      checkCordsWithinBoard(yDirection + 2, xDirection + 1) ? [yDirection + 2, xDirection + 1] : null,
-      checkCordsWithinBoard(yDirection - 2, xDirection - 1) ? [yDirection - 2, xDirection - 1] : null,
-      checkCordsWithinBoard(yDirection - 1, xDirection - 2) ? [yDirection - 1, xDirection - 2] : null,
-      checkCordsWithinBoard(yDirection + 1, xDirection - 2) ? [yDirection + 1, xDirection - 2] : null,
-      checkCordsWithinBoard(yDirection + 2, xDirection - 1) ? [yDirection + 2, xDirection - 1] : null
-    ]
+    if (piece === 'b-knight' || piece === 'w-knight') {
+      potentialSpaces = [
+        checkCordsWithinBoard(yDirection - 2, xDirection + 1) ? [yDirection - 2, xDirection + 1] : null,
+        checkCordsWithinBoard(yDirection - 1, xDirection + 2) ? [yDirection - 1, xDirection + 2] : null,
+        checkCordsWithinBoard(yDirection + 1, xDirection + 2) ? [yDirection + 1, xDirection + 2] : null,
+        checkCordsWithinBoard(yDirection + 2, xDirection + 1) ? [yDirection + 2, xDirection + 1] : null,
+        checkCordsWithinBoard(yDirection - 2, xDirection - 1) ? [yDirection - 2, xDirection - 1] : null,
+        checkCordsWithinBoard(yDirection - 1, xDirection - 2) ? [yDirection - 1, xDirection - 2] : null,
+        checkCordsWithinBoard(yDirection + 1, xDirection - 2) ? [yDirection + 1, xDirection - 2] : null,
+        checkCordsWithinBoard(yDirection + 2, xDirection - 1) ? [yDirection + 2, xDirection - 1] : null
+      ]
+    } else if (piece === 'b-rook' || piece === 'w-rook') {
+      for (let i = 0; i < 8; i++) {
+        checkCordsWithinBoard(yDirection + i, xDirection) ? potentialSpaces.push([yDirection + i, xDirection]) : null
+        checkCordsWithinBoard(yDirection - i, xDirection) ? potentialSpaces.push([yDirection - i, xDirection]) : null
+        checkCordsWithinBoard(yDirection, xDirection + i) ? potentialSpaces.push([yDirection, xDirection + i]) : null
+        checkCordsWithinBoard(yDirection, xDirection - i) ? potentialSpaces.push([yDirection, xDirection - i]) : null
+      }
+    } else if (piece === 'w-bishop' || piece === 'b-bishop') {
+      for (let i = 0; i < 8; i++) {
+        checkCordsWithinBoard(yDirection + i, xDirection + i) ? potentialSpaces.push([yDirection + i, xDirection + i]) : null
+        checkCordsWithinBoard(yDirection - i, xDirection - i) ? potentialSpaces.push([yDirection - i, xDirection - i]) : null
+        checkCordsWithinBoard(yDirection + i, xDirection - i) ? potentialSpaces.push([yDirection + i, xDirection - i]) : null
+        checkCordsWithinBoard(yDirection - i, xDirection + i) ? potentialSpaces.push([yDirection - i, xDirection + i]) : null
+      }
+    } else if (piece === 'w-king' || piece === 'b-king') {
+      potentialSpaces = [
+        checkCordsWithinBoard(yDirection + 1, xDirection + 1) ? [yDirection + 1, xDirection + 1] : null,
+        checkCordsWithinBoard(yDirection - 1, xDirection - 1) ? [yDirection - 1, xDirection - 1] : null,
+        checkCordsWithinBoard(yDirection - 1, xDirection + 1) ? [yDirection - 1, xDirection + 1] : null,
+        checkCordsWithinBoard(yDirection + 1, xDirection - 1) ? [yDirection + 1, xDirection - 1] : null,
+
+        checkCordsWithinBoard(yDirection - 1, xDirection) ? [yDirection - 1, xDirection] : null,
+        checkCordsWithinBoard(yDirection + 1, xDirection) ? [yDirection + 1, xDirection] : null,
+        checkCordsWithinBoard(yDirection, xDirection + 1) ? [yDirection, xDirection + 1] : null,
+        checkCordsWithinBoard(yDirection, xDirection - 1) ? [yDirection, xDirection - 1] : null,
+      ]
+    } else if (piece === 'b-queen' || piece === 'w-queen') {
+      for (let i = 0; i < 8; i++) {
+        checkCordsWithinBoard(yDirection + i, xDirection) ? potentialSpaces.push([yDirection + i, xDirection]) : null
+        checkCordsWithinBoard(yDirection - i, xDirection) ? potentialSpaces.push([yDirection - i, xDirection]) : null
+        checkCordsWithinBoard(yDirection, xDirection + i) ? potentialSpaces.push([yDirection, xDirection + i]) : null
+        checkCordsWithinBoard(yDirection, xDirection - i) ? potentialSpaces.push([yDirection, xDirection - i]) : null
+        checkCordsWithinBoard(yDirection + i, xDirection + i) ? potentialSpaces.push([yDirection + i, xDirection + i]) : null
+        checkCordsWithinBoard(yDirection - i, xDirection - i) ? potentialSpaces.push([yDirection - i, xDirection - i]) : null
+        checkCordsWithinBoard(yDirection + i, xDirection - i) ? potentialSpaces.push([yDirection + i, xDirection - i]) : null
+        checkCordsWithinBoard(yDirection - i, xDirection + i) ? potentialSpaces.push([yDirection - i, xDirection + i]) : null
+      }
+    } else if (piece === 'b-pawn') {
+      potentialSpaces = [
+        checkCordsWithinBoard(yDirection - 2, xDirection) && yDirection === 6 ? [yDirection - 2, xDirection] : null,
+        checkCordsWithinBoard(yDirection - 1, xDirection) ? [yDirection - 1, xDirection] : null,
+        checkCordsWithinBoard(yDirection - 1, xDirection + 1) ? [yDirection - 1, xDirection + 1] : null,
+        checkCordsWithinBoard(yDirection - 1, xDirection - 1) ? [yDirection - 1, xDirection - 1] : null,
+      ]
+    } else if (piece === 'w-pawn') {
+      potentialSpaces = [
+        checkCordsWithinBoard(yDirection + 2, xDirection) && yDirection === 1 ? [yDirection + 2, xDirection] : null,
+        checkCordsWithinBoard(yDirection + 1, xDirection) ? [yDirection + 1, xDirection] : null,
+        checkCordsWithinBoard(yDirection + 1, xDirection + 1) ? [yDirection + 1, xDirection + 1] : null,
+        checkCordsWithinBoard(yDirection + 1, xDirection - 1) ? [yDirection + 1, xDirection - 1] : null,
+      ]
+    } else {
+      potentialSpaces = []
+    }
+
+    // Generating Potential Spaces for Rooks
     potentialSpaces = potentialSpaces.filter(n => n)
+
+    const newBoard = createNewArrayPotentialBoard()
+    if (potentialSpaces.length === 0) {
+      null
+    } else {
+      for (let index in potentialSpaces) {
+        const xCord = potentialSpaces[index]![1]
+        const yCord = potentialSpaces[index]![0]
+        newBoard[yCord][xCord] = 'Move'
+      }
+    }
+    newBoard[yDirection][xDirection] = 'Piece'
+
     this.setState({
       piece: piece,
       currentLocation: pieceLocation,
-      potentialSpaces: potentialSpaces })
+      potentialSpaces: potentialSpaces,
+      potentialBoard: newBoard })
   }
 
   render() {
@@ -129,13 +202,14 @@ function createNewArrayOfBoard() {
   const empty2 = [] = new Array(8).fill('Empty');
   const empty3 = [] = new Array(8).fill('Empty');
   const empty4 = [] = new Array(8).fill('Empty');
+  const testing = ['Empty', 'Empty', 'w-bishop', 'Empty', 'b-pawn', 'w-pawn', 'Empty', 'Empty', ]
   const whitePawn = [] = new Array(8).fill('w-pawn');
   const blackPawn = [] = new Array(8).fill('b-pawn');
   const arrayBoard = [
     ['w-rook', 'w-knight', 'w-bishop', 'w-queen', 'w-king', 'w-bishop', 'w-knight', 'w-rook',],
     whitePawn,
     empty1,
-    empty2,
+    testing,
     empty3,
     empty4,
     blackPawn,
@@ -145,14 +219,14 @@ function createNewArrayOfBoard() {
 }
 
 function createNewArrayPotentialBoard() {
-  const empty1 = [] = new Array(8).fill('Empty');
-  const empty2 = [] = new Array(8).fill('Empty');
-  const empty3 = [] = new Array(8).fill('Empty');
-  const empty4 = [] = new Array(8).fill('Empty');
-  const empty5 = [] = new Array(8).fill('Empty');
-  const empty6 = [] = new Array(8).fill('Empty');
-  const empty7 = [] = new Array(8).fill('Empty');
-  const empty8 = [] = new Array(8).fill('Empty');
+  const empty1 = [] = new Array(8).fill('0');
+  const empty2 = [] = new Array(8).fill('0');
+  const empty3 = [] = new Array(8).fill('0');
+  const empty4 = [] = new Array(8).fill('0');
+  const empty5 = [] = new Array(8).fill('0');
+  const empty6 = [] = new Array(8).fill('0');
+  const empty7 = [] = new Array(8).fill('0');
+  const empty8 = [] = new Array(8).fill('0');
   const arrayBoard = [
     empty1,
     empty2,
