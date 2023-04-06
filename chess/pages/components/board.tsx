@@ -25,6 +25,7 @@ class Board extends Component<BoardProps, MyState> {
     }
     this.handlePiecePotentialSpaces = this.handlePiecePotentialSpaces.bind(this);
     this.handlePieceClick = this.handlePieceClick.bind(this)
+    this.handlePieceMove = this.handlePieceMove.bind(this)
   }
 
   handlePieceClick(event: any) {
@@ -47,6 +48,32 @@ class Board extends Component<BoardProps, MyState> {
       potentialSpaces: [[]],
       currentLocation: []
     })
+  }
+
+  handlePieceMove(event:any) {
+    let [selectedLocation] = event.target.id.split(' ')
+    const yDirection = +selectedLocation[0]
+    const xDirection = +selectedLocation[1]
+    const selectedLocationArr = [yDirection, xDirection]
+
+    const {potentialSpaces, board, piece, currentLocation} = this.state
+
+    const currYLocation = currentLocation[0]
+    const currXLocation = currentLocation[1]
+
+    for (let index in potentialSpaces) {
+      if (JSON.stringify(selectedLocationArr) === JSON.stringify(potentialSpaces[index])) {
+        board![yDirection][xDirection] = piece!
+        board![currYLocation][currXLocation] = 'Empty'
+        this.setState({
+          board: board,
+          piece: '',
+          potentialSpaces: [[]],
+          currentLocation: [],
+          potentialBoard: createNewArrayPotentialBoard()
+        })
+      }
+    }
   }
 
   handlePiecePotentialSpaces(event: any) {
@@ -167,7 +194,7 @@ class Board extends Component<BoardProps, MyState> {
       const tempRow = []
       for (let x = 0; x < 8; x++) {
         const pieceContent = potentialBoard![y][x] === 'Empty' ? 'Empty' : potentialBoard![y][x].toString()
-        tempRow.push(<div id={`${y + x.toString()} ${pieceContent}`} className='basis-1/8' > {pieceContent} </div>)
+        tempRow.push(<div id={`${y + x.toString()} ${pieceContent}`} onClick={this.handlePieceMove} className='basis-1/8' > {pieceContent} </div>)
       }
       potentialSpacesDivArray.push(tempRow)
     }
