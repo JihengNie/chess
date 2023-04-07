@@ -16,7 +16,7 @@ export default function Home() {
           </thead>
           <tbody>
             <tr className="bg-white border-b dark:bg-warning-100 dark:border-gray-700 hover:bg-neutral-100">
-              <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <th scope="row" className=" text-gray-900 px-6 py-4 font-medium  whitespace-nowrap dark:text-white">
                 Vinny
               </th>
               <td className="px-6 py-4">
@@ -24,7 +24,7 @@ export default function Home() {
               </td>
             </tr>
             <tr className="bg-white border-b dark:bg-warning-100 dark:border-gray-700 hover:bg-neutral-100">
-              <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <th scope="row" className=" text-gray-900 px-6 py-4 font-medium  whitespace-nowrap dark:text-white">
                 Aaron
               </th>
               <td className="px-6 py-4">
@@ -32,7 +32,7 @@ export default function Home() {
               </td>
             </tr>
             <tr className="bg-white border-b dark:bg-warning-100 dark:border-gray-700 hover:bg-neutral-100">
-              <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <th scope="row" className=" text-gray-900 px-6 py-4 font-medium whitespace-nowrap dark:text-white">
                 Google
               </th>
               <td className="px-6 py-4">
