@@ -94,36 +94,97 @@ class Board extends Component<BoardProps, MyState> {
         checkCordsWithinBoard(yDirection + 2, xDirection - 1) ? [yDirection + 2, xDirection - 1] : null
       ]
     } else if (piece === 'b-rook' || piece === 'w-rook') {
-      let currentPieceColor = 'w'
-      if (piece === 'b-rook') {
-        currentPieceColor = 'b'
-      }
       let moveDown = true
-      let downCounter = 1
+      let downCounter = 0
       while(moveDown) {
-        if (board![yDirection + downCounter][xDirection].split('-')[0] === currentPieceColor || board![yDirection + downCounter][xDirection].split('-')[0] !== 'Empty') {
-          moveDown = false
-        } else if (checkCordsWithinBoard(yDirection + downCounter, xDirection)) {
-            potentialSpaces.push([yDirection + downCounter, xDirection])
-        }
         downCounter++
+        if (checkCordsWithinBoard(yDirection + downCounter, xDirection)) {
+          if (board![yDirection + downCounter][xDirection].split('-')[0] === 'Empty') {
+            potentialSpaces.push([yDirection + downCounter, xDirection])
+          } else if (piece === 'b-rook' && board![yDirection + downCounter][xDirection].split('-')[0] === 'b') {
+            moveDown = false
+          } else if (piece === 'w-rook' && board![yDirection + downCounter][xDirection].split('-')[0] === 'w') {
+            moveDown = false
+          } else if (piece === 'b-rook' && board![yDirection + downCounter][xDirection].split('-')[0] === 'w') {
+            potentialSpaces.push([yDirection + downCounter, xDirection])
+            moveDown = false
+          } else if (piece === 'w-rook' && board![yDirection + downCounter][xDirection].split('-')[0] === 'b') {
+            potentialSpaces.push([yDirection + downCounter, xDirection])
+            moveDown = false
+          }
+        } else {
+          moveDown = false
+        }
       }
 
+      let moveUp = true
+      let upCounter = 0
+      while (moveUp) {
+        upCounter++
+        if (checkCordsWithinBoard(yDirection - upCounter, xDirection)) {
+          if (board![yDirection - upCounter][xDirection].split('-')[0] === 'Empty') {
+            potentialSpaces.push([yDirection - upCounter, xDirection])
+          } else if (piece === 'b-rook' && board![yDirection - upCounter][xDirection].split('-')[0] === 'b') {
+            moveUp = false
+          } else if (piece === 'w-rook' && board![yDirection - upCounter][xDirection].split('-')[0] === 'w') {
+            moveUp = false
+          } else if (piece === 'b-rook' && board![yDirection - upCounter][xDirection].split('-')[0] === 'w') {
+            potentialSpaces.push([yDirection - upCounter, xDirection])
+            moveUp = false
+          } else if (piece === 'w-rook' && board![yDirection - upCounter][xDirection].split('-')[0] === 'b') {
+            potentialSpaces.push([yDirection - upCounter, xDirection])
+            moveUp = false
+          }
+        } else {
+          moveUp = false
+        }
+      }
 
-      // for (let i = 0; i < 8; i++) {
-      //   // if (moveDown) {
-      //   //   if (checkCordsWithinBoard(yDirection + i, xDirection)) {
-      //   //     if (piece === 'b-rook' && board![yDirection + i][xDirection] === 'Empty') {
-      //   //       potentialSpaces.push([yDirection + i, xDirection])
-      //   //       moveDown = false
-      //   //     }
-      //   //   }
-      //   // }
-      //   // checkCordsWithinBoard(yDirection + i, xDirection) ? potentialSpaces.push([yDirection + i, xDirection]) : null // down
-      //   checkCordsWithinBoard(yDirection - i, xDirection) ? potentialSpaces.push([yDirection - i, xDirection]) : null // up
-      //   checkCordsWithinBoard(yDirection, xDirection + i) ? potentialSpaces.push([yDirection, xDirection + i]) : null // right
-      //   checkCordsWithinBoard(yDirection, xDirection - i) ? potentialSpaces.push([yDirection, xDirection - i]) : null // left
-      // }
+      let moveRight = true
+      let rightCounter = 0
+      while (moveRight) {
+        rightCounter++
+        if (checkCordsWithinBoard(yDirection, xDirection + rightCounter)) {
+          if (board![yDirection][xDirection + rightCounter].split('-')[0] === 'Empty') {
+            potentialSpaces.push([yDirection, xDirection + rightCounter])
+          } else if (piece === 'b-rook' && board![yDirection][xDirection + rightCounter].split('-')[0] === 'b') {
+            moveRight = false
+          } else if (piece === 'w-rook' && board![yDirection][xDirection + rightCounter].split('-')[0] === 'w') {
+            moveRight = false
+          } else if (piece === 'b-rook' && board![yDirection][xDirection + rightCounter].split('-')[0] === 'w') {
+            potentialSpaces.push([yDirection, xDirection + rightCounter])
+            moveRight = false
+          } else if (piece === 'w-rook' && board![yDirection][xDirection + rightCounter].split('-')[0] === 'b') {
+            potentialSpaces.push([yDirection, xDirection + rightCounter])
+            moveRight = false
+          }
+        } else {
+          moveRight = false
+        }
+      }
+
+      let moveLeft = true
+      let leftCounter = 0
+      while (moveLeft) {
+        leftCounter++
+        if (checkCordsWithinBoard(yDirection, xDirection - leftCounter)) {
+          if (board![yDirection][xDirection - leftCounter].split('-')[0] === 'Empty') {
+            potentialSpaces.push([yDirection, xDirection - leftCounter])
+          } else if (piece === 'b-rook' && board![yDirection][xDirection - leftCounter].split('-')[0] === 'b') {
+            moveLeft = false
+          } else if (piece === 'w-rook' && board![yDirection][xDirection - leftCounter].split('-')[0] === 'w') {
+            moveLeft = false
+          } else if (piece === 'b-rook' && board![yDirection][xDirection - leftCounter].split('-')[0] === 'w') {
+            potentialSpaces.push([yDirection, xDirection - leftCounter])
+            moveLeft = false
+          } else if (piece === 'w-rook' && board![yDirection][xDirection - leftCounter].split('-')[0] === 'b') {
+            potentialSpaces.push([yDirection, xDirection - leftCounter])
+            moveLeft = false
+          }
+        } else {
+          moveLeft = false
+        }
+      }
     } else if (piece === 'w-bishop' || piece === 'b-bishop') {
       for (let i = 0; i < 8; i++) {
         checkCordsWithinBoard(yDirection + i, xDirection + i) ? potentialSpaces.push([yDirection + i, xDirection + i]) : null
