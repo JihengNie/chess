@@ -1,4 +1,4 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 
 interface BoardProps {
   turn?: string;
@@ -24,61 +24,57 @@ class Board extends Component<BoardProps, MyState> {
       currentLocation: []
     }
     this.handlePiecePotentialSpaces = this.handlePiecePotentialSpaces.bind(this);
-    this.handlePieceClick = this.handlePieceClick.bind(this)
     this.handlePieceMove = this.handlePieceMove.bind(this)
   }
 
-  handlePieceClick(event: any) {
-    const { piece, currentLocation, potentialSpaces } = this.state
-    const yDirection = +currentLocation[0]
-    const xDirection = +currentLocation[1]
-    const [ newCords ] = event.target.id.split(' ')
-    const newY = +newCords[0]
-    const newX = +newCords[1]
-    const newLocation = [newY, newX]
-    const newBoard = [...this.state.board!]
-
-    if (JSON.stringify(newLocation) === JSON.stringify(currentLocation) && checkItemInPotentialSpaces(potentialSpaces, newLocation)) {
-      // Setting Current space to null
-      newBoard[yDirection][xDirection] = 'Empty'
-      newBoard[newY][newX] = piece!
-    }
-    this.setState({ board: newBoard,
-      piece: '',
-      potentialSpaces: [[]],
-      currentLocation: []
-    })
-  }
-
-  handlePieceMove(event:any) {
+  handlePieceMove(event: any) {
     let [selectedLocation] = event.target.id.split(' ')
     const yDirection = +selectedLocation[0]
     const xDirection = +selectedLocation[1]
     const selectedLocationArr = [yDirection, xDirection]
 
-    const {potentialSpaces, board, piece, currentLocation} = this.state
+    const { potentialSpaces, board, piece, currentLocation } = this.state
 
     const currYLocation = currentLocation[0]
     const currXLocation = currentLocation[1]
+    let ableMove = false
 
     for (let index in potentialSpaces) {
       if (JSON.stringify(selectedLocationArr) === JSON.stringify(potentialSpaces[index])) {
-        board![yDirection][xDirection] = piece!
-        board![currYLocation][currXLocation] = 'Empty'
-        this.setState({
-          board: board,
-          piece: '',
-          potentialSpaces: [[]],
-          currentLocation: [],
-          potentialBoard: createNewArrayPotentialBoard()
-        })
+        ableMove = true
+        if (piece === 'b-knight' && (board![yDirection][xDirection].split('-')[0] === 'w' || board![yDirection][xDirection]=== 'Empty')) {
+          ableMove = true
+        } else if (piece === 'w-knight' && (board![yDirection][xDirection].split('-')[0] === 'b' || board![yDirection][xDirection] === 'Empty')) {
+          ableMove = true
+        } else if (piece === 'b-bishop') {
+
+        }
+        else {
+          console.log('Can not move there')
+        }
+
       }
     }
+
+    if (ableMove) {
+      board![yDirection][xDirection] = piece!
+      board![currYLocation][currXLocation] = 'Empty'
+      this.setState({
+        board: board,
+        piece: '',
+        potentialSpaces: [[]],
+        currentLocation: [],
+        potentialBoard: createNewArrayPotentialBoard()
+      })
+    } else {
+      console.log('Can not move there')
+    }
+
   }
 
   handlePiecePotentialSpaces(event: any) {
-    let [currLocation, piece ] = event.target.id.split(' ')
-
+    let [currLocation, piece] = event.target.id.split(' ')
+    const { board } = this.state
     const yDirection = +currLocation[0]
     const xDirection = +currLocation[1]
     const pieceLocation = [yDirection, xDirection]
@@ -98,12 +94,36 @@ class Board extends Component<BoardProps, MyState> {
         checkCordsWithinBoard(yDirection + 2, xDirection - 1) ? [yDirection + 2, xDirection - 1] : null
       ]
     } else if (piece === 'b-rook' || piece === 'w-rook') {
-      for (let i = 0; i < 8; i++) {
-        checkCordsWithinBoard(yDirection + i, xDirection) ? potentialSpaces.push([yDirection + i, xDirection]) : null
-        checkCordsWithinBoard(yDirection - i, xDirection) ? potentialSpaces.push([yDirection - i, xDirection]) : null
-        checkCordsWithinBoard(yDirection, xDirection + i) ? potentialSpaces.push([yDirection, xDirection + i]) : null
-        checkCordsWithinBoard(yDirection, xDirection - i) ? potentialSpaces.push([yDirection, xDirection - i]) : null
+      let currentPieceColor = 'w'
+      if (piece === 'b-rook') {
+        currentPieceColor = 'b'
       }
+      let moveDown = true
+      let downCounter = 1
+      while(moveDown) {
+        if (board![yDirection + downCounter][xDirection].split('-')[0] === currentPieceColor || board![yDirection + downCounter][xDirection].split('-')[0] !== 'Empty') {
+          moveDown = false
+        } else if (checkCordsWithinBoard(yDirection + downCounter, xDirection)) {
+            potentialSpaces.push([yDirection + downCounter, xDirection])
+        }
+        downCounter++
+      }
+
+
+      // for (let i = 0; i < 8; i++) {
+      //   // if (moveDown) {
+      //   //   if (checkCordsWithinBoard(yDirection + i, xDirection)) {
+      //   //     if (piece === 'b-rook' && board![yDirection + i][xDirection] === 'Empty') {
+      //   //       potentialSpaces.push([yDirection + i, xDirection])
+      //   //       moveDown = false
+      //   //     }
+      //   //   }
+      //   // }
+      //   // checkCordsWithinBoard(yDirection + i, xDirection) ? potentialSpaces.push([yDirection + i, xDirection]) : null // down
+      //   checkCordsWithinBoard(yDirection - i, xDirection) ? potentialSpaces.push([yDirection - i, xDirection]) : null // up
+      //   checkCordsWithinBoard(yDirection, xDirection + i) ? potentialSpaces.push([yDirection, xDirection + i]) : null // right
+      //   checkCordsWithinBoard(yDirection, xDirection - i) ? potentialSpaces.push([yDirection, xDirection - i]) : null // left
+      // }
     } else if (piece === 'w-bishop' || piece === 'b-bishop') {
       for (let i = 0; i < 8; i++) {
         checkCordsWithinBoard(yDirection + i, xDirection + i) ? potentialSpaces.push([yDirection + i, xDirection + i]) : null
@@ -171,13 +191,14 @@ class Board extends Component<BoardProps, MyState> {
       piece: piece,
       currentLocation: pieceLocation,
       potentialSpaces: potentialSpaces,
-      potentialBoard: newBoard })
+      potentialBoard: newBoard
+    })
   }
 
   render() {
-    console.log(this.state)
+    // console.log(this.state)
     const { turn } = this.props;
-    const { board, potentialBoard} = this.state
+    const { board, potentialBoard } = this.state
 
     const rowDivArray = []
     for (let y = 0; y < 8; y++) {
@@ -229,7 +250,7 @@ function createNewArrayOfBoard() {
   const empty2 = [] = new Array(8).fill('Empty');
   const empty3 = [] = new Array(8).fill('Empty');
   const empty4 = [] = new Array(8).fill('Empty');
-  const testing = ['Empty', 'Empty', 'w-bishop', 'Empty', 'b-pawn', 'w-pawn', 'Empty', 'Empty', ]
+  const testing = ['Empty', 'b-rook', 'w-rook', 'Empty', 'b-pawn', 'w-pawn', 'Empty', 'Empty',]
   const whitePawn = [] = new Array(8).fill('w-pawn');
   const blackPawn = [] = new Array(8).fill('b-pawn');
   const arrayBoard = [
@@ -267,8 +288,8 @@ function createNewArrayPotentialBoard() {
   return arrayBoard
 }
 
-function checkCordsWithinBoard(xDirection: number, yDirection: number ) {
-  if (xDirection >= 0 && xDirection <= 7 && yDirection >= 0 && yDirection <= 7 ) {
+function checkCordsWithinBoard(xDirection: number, yDirection: number) {
+  if (xDirection >= 0 && xDirection <= 7 && yDirection >= 0 && yDirection <= 7) {
     return true
   } else {
     return false
