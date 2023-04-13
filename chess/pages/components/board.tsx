@@ -200,12 +200,99 @@ class Board extends Component<BoardProps, MyState> {
         }
       }
     } else if (piece === 'w-bishop' || piece === 'b-bishop') {
-      for (let i = 0; i < 8; i++) {
-        checkCordsWithinBoard(yDirection + i, xDirection + i) ? potentialSpaces.push([yDirection + i, xDirection + i]) : null
-        checkCordsWithinBoard(yDirection - i, xDirection - i) ? potentialSpaces.push([yDirection - i, xDirection - i]) : null
-        checkCordsWithinBoard(yDirection + i, xDirection - i) ? potentialSpaces.push([yDirection + i, xDirection - i]) : null
-        checkCordsWithinBoard(yDirection - i, xDirection + i) ? potentialSpaces.push([yDirection - i, xDirection + i]) : null
+      let moveDownRight = true
+      let downRightCounter = 0
+      while (moveDownRight) {
+        downRightCounter++
+        if (checkCordsWithinBoard(yDirection + downRightCounter, xDirection + downRightCounter)) {
+          if (board![yDirection + downRightCounter][xDirection + downRightCounter].split('-')[0] === 'Empty') {
+            potentialSpaces.push([yDirection + downRightCounter, xDirection + downRightCounter])
+          } else if (piece === 'b-bishop' && board![yDirection + downRightCounter][xDirection + downRightCounter].split('-')[0] === 'b') {
+            moveDownRight = false
+          } else if (piece === 'w-bishop' && board![yDirection + downRightCounter][xDirection + downRightCounter].split('-')[0] === 'w') {
+            moveDownRight = false
+          } else if (piece === 'b-bishop' && board![yDirection + downRightCounter][xDirection + downRightCounter].split('-')[0] === 'w') {
+            potentialSpaces.push([yDirection + downRightCounter, xDirection + downRightCounter])
+            moveDownRight = false
+          } else if (piece === 'w-bishop' && board![yDirection + downRightCounter][xDirection + downRightCounter].split('-')[0] === 'b') {
+            potentialSpaces.push([yDirection + downRightCounter, xDirection + downRightCounter])
+            moveDownRight = false
+          }
+        } else {
+          moveDownRight = false
+        }
       }
+
+
+      let moveTopRight = true
+      let topRightCounter = 0
+      while (moveTopRight) {
+        topRightCounter++
+        if (checkCordsWithinBoard(yDirection - topRightCounter, xDirection + topRightCounter)) {
+          if (board![yDirection - topRightCounter][xDirection + topRightCounter].split('-')[0] === 'Empty') {
+            potentialSpaces.push([yDirection - topRightCounter, xDirection + topRightCounter])
+          } else if (piece === 'b-bishop' && board![yDirection - topRightCounter][xDirection + topRightCounter].split('-')[0] === 'b') {
+            moveTopRight = false
+          } else if (piece === 'w-bishop' && board![yDirection - topRightCounter][xDirection + topRightCounter].split('-')[0] === 'w') {
+            moveTopRight = false
+          } else if (piece === 'b-bishop' && board![yDirection - topRightCounter][xDirection + topRightCounter].split('-')[0] === 'w') {
+            potentialSpaces.push([yDirection - topRightCounter, xDirection + topRightCounter])
+            moveTopRight = false
+          } else if (piece === 'w-bishop' && board![yDirection - topRightCounter][xDirection + topRightCounter].split('-')[0] === 'b') {
+            potentialSpaces.push([yDirection - topRightCounter, xDirection + topRightCounter])
+            moveTopRight = false
+          }
+        } else {
+          moveTopRight = false
+        }
+      }
+
+      let moveUpLeft = true
+      let upLeftCounter = 0
+      while (moveUpLeft) {
+        upLeftCounter++
+        if (checkCordsWithinBoard(yDirection - upLeftCounter, xDirection - upLeftCounter)) {
+          if (board![yDirection - upLeftCounter][xDirection - upLeftCounter].split('-')[0] === 'Empty') {
+            potentialSpaces.push([yDirection - upLeftCounter, xDirection - upLeftCounter])
+          } else if (piece === 'b-bishop' && board![yDirection - upLeftCounter][xDirection - upLeftCounter].split('-')[0] === 'b') {
+            moveUpLeft = false
+          } else if (piece === 'w-bishop' && board![yDirection - upLeftCounter][xDirection - upLeftCounter].split('-')[0] === 'w') {
+            moveUpLeft = false
+          } else if (piece === 'b-bishop' && board![yDirection - upLeftCounter][xDirection - upLeftCounter].split('-')[0] === 'w') {
+            potentialSpaces.push([yDirection - upLeftCounter, xDirection - upLeftCounter])
+            moveUpLeft = false
+          } else if (piece === 'w-bishop' && board![yDirection - upLeftCounter][xDirection - upLeftCounter].split('-')[0] === 'b') {
+            potentialSpaces.push([yDirection - upLeftCounter, xDirection - upLeftCounter])
+            moveUpLeft = false
+          }
+        } else {
+          moveUpLeft = false
+        }
+      }
+
+      let moveDownLeft = true
+      let downLeftCounter = 0
+      while (moveDownLeft) {
+        downLeftCounter++
+        if (checkCordsWithinBoard(yDirection + downLeftCounter, xDirection - downLeftCounter)) {
+          if (board![yDirection + downLeftCounter][xDirection - downLeftCounter].split('-')[0] === 'Empty') {
+            potentialSpaces.push([yDirection + downLeftCounter, xDirection - downLeftCounter])
+          } else if (piece === 'b-bishop' && board![yDirection + downLeftCounter][xDirection - downLeftCounter].split('-')[0] === 'b') {
+            moveDownLeft = false
+          } else if (piece === 'w-bishop' && board![yDirection + downLeftCounter][xDirection - downLeftCounter].split('-')[0] === 'w') {
+            moveDownLeft = false
+          } else if (piece === 'b-bishop' && board![yDirection + downLeftCounter][xDirection - downLeftCounter].split('-')[0] === 'w') {
+            potentialSpaces.push([yDirection + downLeftCounter, xDirection - downLeftCounter])
+            moveDownLeft = false
+          } else if (piece === 'w-bishop' && board![yDirection + downLeftCounter][xDirection - downLeftCounter].split('-')[0] === 'b') {
+            potentialSpaces.push([yDirection + downLeftCounter, xDirection - downLeftCounter])
+            moveDownLeft = false
+          }
+        } else {
+          moveDownLeft = false
+        }
+      }
+
     } else if (piece === 'w-king' || piece === 'b-king') {
       potentialSpaces = [
         checkCordsWithinBoard(yDirection + 1, xDirection + 1) ? [yDirection + 1, xDirection + 1] : null,
@@ -325,7 +412,7 @@ function createNewArrayOfBoard() {
   const empty2 = [] = new Array(8).fill('Empty');
   const empty3 = [] = new Array(8).fill('Empty');
   const empty4 = [] = new Array(8).fill('Empty');
-  const testing = ['Empty', 'b-rook', 'w-rook', 'Empty', 'b-pawn', 'w-pawn', 'Empty', 'Empty',]
+  const testing = ['Empty', 'b-rook', 'w-bishop', 'Empty', 'b-bishop', 'w-pawn', 'Empty', 'Empty',]
   const whitePawn = [] = new Array(8).fill('w-pawn');
   const blackPawn = [] = new Array(8).fill('b-pawn');
   const arrayBoard = [
