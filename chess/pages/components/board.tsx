@@ -223,7 +223,6 @@ class Board extends Component<BoardProps, MyState> {
         }
       }
 
-
       let moveTopRight = true
       let topRightCounter = 0
       while (moveTopRight) {
@@ -294,17 +293,33 @@ class Board extends Component<BoardProps, MyState> {
       }
 
     } else if (piece === 'w-king' || piece === 'b-king') {
-      potentialSpaces = [
-        checkCordsWithinBoard(yDirection + 1, xDirection + 1) ? [yDirection + 1, xDirection + 1] : null,
-        checkCordsWithinBoard(yDirection - 1, xDirection - 1) ? [yDirection - 1, xDirection - 1] : null,
-        checkCordsWithinBoard(yDirection - 1, xDirection + 1) ? [yDirection - 1, xDirection + 1] : null,
-        checkCordsWithinBoard(yDirection + 1, xDirection - 1) ? [yDirection + 1, xDirection - 1] : null,
+      if (piece === 'b-king') {
+        potentialSpaces = [
+          checkCordsWithinBoard(yDirection + 1, xDirection + 1) && (board![yDirection + 1][xDirection + 1].split('-')[0] === 'w' || board![yDirection + 1][xDirection + 1].split('-')[0] === 'Empty') ? [yDirection + 1, xDirection + 1] : null,
+          checkCordsWithinBoard(yDirection - 1, xDirection - 1) && (board![yDirection - 1][xDirection - 1].split('-')[0] === 'w' || board![yDirection - 1][xDirection - 1].split('-')[0] === 'Empty') ? [yDirection - 1, xDirection - 1] : null,
+          checkCordsWithinBoard(yDirection - 1, xDirection + 1) && (board![yDirection - 1][xDirection + 1].split('-')[0] === 'w' || board![yDirection - 1][xDirection + 1].split('-')[0] === 'Empty') ? [yDirection - 1, xDirection + 1] : null,
+          checkCordsWithinBoard(yDirection + 1, xDirection - 1) && (board![yDirection + 1][xDirection - 1].split('-')[0] === 'w' || board![yDirection + 1][xDirection - 1].split('-')[0] === 'Empty') ? [yDirection + 1, xDirection - 1] : null,
 
-        checkCordsWithinBoard(yDirection - 1, xDirection) ? [yDirection - 1, xDirection] : null,
-        checkCordsWithinBoard(yDirection + 1, xDirection) ? [yDirection + 1, xDirection] : null,
-        checkCordsWithinBoard(yDirection, xDirection + 1) ? [yDirection, xDirection + 1] : null,
-        checkCordsWithinBoard(yDirection, xDirection - 1) ? [yDirection, xDirection - 1] : null,
-      ]
+          checkCordsWithinBoard(yDirection - 1, xDirection) && (board![yDirection - 1][xDirection].split('-')[0] === 'w' || board![yDirection - 1][xDirection].split('-')[0] === 'Empty') ? [yDirection - 1, xDirection] : null,
+          checkCordsWithinBoard(yDirection + 1, xDirection) && (board![yDirection + 1][xDirection].split('-')[0] === 'w' || board![yDirection + 1][xDirection].split('-')[0] === 'Empty') ? [yDirection + 1, xDirection] : null,
+          checkCordsWithinBoard(yDirection, xDirection + 1) && (board![yDirection][xDirection + 1].split('-')[0] === 'w' || board![yDirection][xDirection + 1].split('-')[0] === 'Empty') ? [yDirection, xDirection + 1] : null,
+          checkCordsWithinBoard(yDirection, xDirection - 1) && (board![yDirection][xDirection - 1].split('-')[0] === 'w' || board![yDirection][xDirection - 1].split('-')[0] === 'Empty') ? [yDirection, xDirection - 1] : null,
+        ]
+      }
+
+      if (piece === 'w-king') {
+        potentialSpaces = [
+          checkCordsWithinBoard(yDirection + 1, xDirection + 1) && (board![yDirection + 1][xDirection + 1].split('-')[0] === 'b' || board![yDirection + 1][xDirection + 1].split('-')[0] === 'Empty') ? [yDirection + 1, xDirection + 1] : null,
+          checkCordsWithinBoard(yDirection - 1, xDirection - 1) && (board![yDirection - 1][xDirection - 1].split('-')[0] === 'b' || board![yDirection - 1][xDirection - 1].split('-')[0] === 'Empty') ? [yDirection - 1, xDirection - 1] : null,
+          checkCordsWithinBoard(yDirection - 1, xDirection + 1) && (board![yDirection - 1][xDirection + 1].split('-')[0] === 'b' || board![yDirection - 1][xDirection + 1].split('-')[0] === 'Empty') ? [yDirection - 1, xDirection + 1] : null,
+          checkCordsWithinBoard(yDirection + 1, xDirection - 1) && (board![yDirection + 1][xDirection - 1].split('-')[0] === 'b' || board![yDirection + 1][xDirection - 1].split('-')[0] === 'Empty') ? [yDirection + 1, xDirection - 1] : null,
+
+          checkCordsWithinBoard(yDirection - 1, xDirection) && (board![yDirection - 1][xDirection].split('-')[0] === 'b' || board![yDirection - 1][xDirection].split('-')[0] === 'Empty') ? [yDirection - 1, xDirection] : null,
+          checkCordsWithinBoard(yDirection + 1, xDirection) && (board![yDirection + 1][xDirection].split('-')[0] === 'b' || board![yDirection + 1][xDirection].split('-')[0] === 'Empty') ? [yDirection + 1, xDirection] : null,
+          checkCordsWithinBoard(yDirection, xDirection + 1) && (board![yDirection][xDirection + 1].split('-')[0] === 'b' || board![yDirection][xDirection + 1].split('-')[0] === 'Empty') ? [yDirection, xDirection + 1] : null,
+          checkCordsWithinBoard(yDirection, xDirection - 1) && (board![yDirection][xDirection - 1].split('-')[0] === 'b' || board![yDirection][xDirection - 1].split('-')[0] === 'Empty') ? [yDirection, xDirection - 1] : null,
+        ]
+      }
     } else if (piece === 'b-queen' || piece === 'w-queen') {
       for (let i = 0; i < 8; i++) {
         checkCordsWithinBoard(yDirection + i, xDirection) ? potentialSpaces.push([yDirection + i, xDirection]) : null
@@ -412,7 +427,7 @@ function createNewArrayOfBoard() {
   const empty2 = [] = new Array(8).fill('Empty');
   const empty3 = [] = new Array(8).fill('Empty');
   const empty4 = [] = new Array(8).fill('Empty');
-  const testing = ['Empty', 'b-rook', 'w-bishop', 'Empty', 'b-bishop', 'w-pawn', 'Empty', 'Empty',]
+  const testing = ['Empty', 'b-rook', 'w-king', 'Empty', 'b-king', 'w-pawn', 'Empty', 'Empty',]
   const whitePawn = [] = new Array(8).fill('w-pawn');
   const blackPawn = [] = new Array(8).fill('b-pawn');
   const arrayBoard = [
