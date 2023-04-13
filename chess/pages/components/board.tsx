@@ -506,30 +506,19 @@ class Board extends Component<BoardProps, MyState> {
         }
       }
 
-
-      // for (let i = 0; i < 8; i++) {
-      //   checkCordsWithinBoard(yDirection + i, xDirection) ? potentialSpaces.push([yDirection + i, xDirection]) : null
-      //   checkCordsWithinBoard(yDirection - i, xDirection) ? potentialSpaces.push([yDirection - i, xDirection]) : null
-      //   checkCordsWithinBoard(yDirection, xDirection + i) ? potentialSpaces.push([yDirection, xDirection + i]) : null
-      //   checkCordsWithinBoard(yDirection, xDirection - i) ? potentialSpaces.push([yDirection, xDirection - i]) : null
-      //   checkCordsWithinBoard(yDirection + i, xDirection + i) ? potentialSpaces.push([yDirection + i, xDirection + i]) : null
-      //   checkCordsWithinBoard(yDirection - i, xDirection - i) ? potentialSpaces.push([yDirection - i, xDirection - i]) : null
-      //   checkCordsWithinBoard(yDirection + i, xDirection - i) ? potentialSpaces.push([yDirection + i, xDirection - i]) : null
-      //   checkCordsWithinBoard(yDirection - i, xDirection + i) ? potentialSpaces.push([yDirection - i, xDirection + i]) : null
-      // }
     } else if (piece === 'b-pawn') {
       potentialSpaces = [
-        checkCordsWithinBoard(yDirection - 2, xDirection) && yDirection === 6 ? [yDirection - 2, xDirection] : null,
-        checkCordsWithinBoard(yDirection - 1, xDirection) ? [yDirection - 1, xDirection] : null,
-        checkCordsWithinBoard(yDirection - 1, xDirection + 1) ? [yDirection - 1, xDirection + 1] : null,
-        checkCordsWithinBoard(yDirection - 1, xDirection - 1) ? [yDirection - 1, xDirection - 1] : null,
+        checkCordsWithinBoard(yDirection - 2, xDirection) && yDirection === 6 && board![yDirection - 1][xDirection] === 'Empty' && board![yDirection - 2][xDirection] === 'Empty' ? [yDirection - 2, xDirection] : null,
+        checkCordsWithinBoard(yDirection - 1, xDirection) && board![yDirection - 1][xDirection] === 'Empty' ? [yDirection - 1, xDirection] : null,
+        checkCordsWithinBoard(yDirection - 1, xDirection + 1) && board![yDirection - 1][xDirection + 1].split('-')[0] === 'w' ? [yDirection - 1, xDirection + 1] : null,
+        checkCordsWithinBoard(yDirection - 1, xDirection - 1) && board![yDirection - 1][xDirection - 1].split('-')[0] === 'w' ? [yDirection - 1, xDirection - 1] : null,
       ]
     } else if (piece === 'w-pawn') {
       potentialSpaces = [
-        checkCordsWithinBoard(yDirection + 2, xDirection) && yDirection === 1 ? [yDirection + 2, xDirection] : null,
-        checkCordsWithinBoard(yDirection + 1, xDirection) ? [yDirection + 1, xDirection] : null,
-        checkCordsWithinBoard(yDirection + 1, xDirection + 1) ? [yDirection + 1, xDirection + 1] : null,
-        checkCordsWithinBoard(yDirection + 1, xDirection - 1) ? [yDirection + 1, xDirection - 1] : null,
+        checkCordsWithinBoard(yDirection + 2, xDirection) && yDirection === 1 && board![yDirection + 1][xDirection] === 'Empty' && board![yDirection + 2][xDirection] === 'Empty'? [yDirection + 2, xDirection] : null,
+        checkCordsWithinBoard(yDirection + 1, xDirection) && board![yDirection + 1][xDirection] === 'Empty'? [yDirection + 1, xDirection] : null,
+        checkCordsWithinBoard(yDirection + 1, xDirection + 1) && board![yDirection + 1][xDirection + 1].split('-')[0] === 'b'? [yDirection + 1, xDirection + 1] : null,
+        checkCordsWithinBoard(yDirection + 1, xDirection - 1) && board![yDirection + 1][xDirection - 1].split('-')[0] === 'b'? [yDirection + 1, xDirection - 1] : null,
       ]
     } else {
       potentialSpaces = []
