@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import Image from "next/image"
 
-interface RookProps {
+interface props {
   color: string,
   board: string[][],
   position: number[]
@@ -11,7 +11,7 @@ interface imgUrls {
   [key: string]: string
 }
 
-type RookState = {
+type state = {
   hasMoved: boolean,
   selected?: boolean,
   potentialSpaces: (number[] | null)[],
@@ -19,8 +19,8 @@ type RookState = {
 
 }
 
-class Rook extends Component<RookProps, RookState> {
-  constructor(props: RookProps) {
+class Rook extends Component<props, state> {
+  constructor(props: props) {
     super(props)
     this.state = {
       hasMoved: false,
@@ -142,7 +142,7 @@ class Rook extends Component<RookProps, RookState> {
     console.log('props:', this.props)
     return (
       <div onClick={this.handleSelected}>
-        <Image src={imgUrls[color]} alt={`${color}-Knight`} width={100} height={100} />
+        <Image src={imgUrls[color]} alt={`${color}-rook`} width={100} height={100} />
       </div>
     )
   }

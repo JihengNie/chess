@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import Image from "next/image"
 
-interface KnightProps {
+interface props {
   color: string,
   board: string[][],
   position: number[]
@@ -11,7 +11,7 @@ interface imgUrls {
   [key:string]:string
 }
 
-type KnightState = {
+type state = {
   hasMoved: boolean,
   selected?: boolean,
   potentialSpaces: (number[] | null)[],
@@ -19,8 +19,8 @@ type KnightState = {
 
 }
 
-class Knight extends Component<KnightProps, KnightState> {
-  constructor(props: KnightProps) {
+class Knight extends Component<props, state> {
+  constructor(props: props) {
     super(props)
     this.state = {
       hasMoved: false,
@@ -75,7 +75,7 @@ class Knight extends Component<KnightProps, KnightState> {
     console.log('props:', this.props)
     return (
       <div onClick={this.handleSelected}>
-        <Image src={imgUrls[color]} alt={`${color}-Knight`} width={100} height={100}/>
+        <Image src={imgUrls[color]} alt={`${color}-knight`} width={100} height={100}/>
     </div>
   )
 }

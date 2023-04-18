@@ -2,6 +2,7 @@ import Head from "next/head"
 import Board from "./components/board"
 import Knight from "./components/pieces/knight"
 import Rook from "./components/pieces/rook"
+import Bishop from "./components/pieces/bishop"
 
 export default function Home() {
   return (
@@ -12,8 +13,8 @@ export default function Home() {
       </Head>
 
       <Board turn='White'/>
-      <Rook color='white' board={createNewArrayOfBoard()} position={[7,1]}/>
-      <Rook color='black' board={createNewArrayOfBoard()} position={[7, 1]} />
+      <Bishop color='white' board={createNewArrayOfBoard()} position={[7,1]}/>
+      <Bishop color='black' board={createNewArrayOfBoard()} position={[7, 1]} />
     </div>
 
   )
