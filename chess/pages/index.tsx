@@ -5,6 +5,7 @@ import Rook from "./components/pieces/rook"
 import Bishop from "./components/pieces/bishop"
 import King from "./components/pieces/king"
 import Pawn from "./components/pieces/pawn"
+import Queen from "./components/pieces/queen"
 
 export default function Home() {
   return (
@@ -15,8 +16,8 @@ export default function Home() {
       </Head>
 
       <Board turn='White'/>
-      <Pawn color='white' board={createNewArrayOfBoard()} position={[6,1]}/>
-      <Pawn color='black' board={createNewArrayOfBoard()} position={[6,1]} />
+      <Queen color='white' board={createNewArrayOfBoard()} position={[6,1]}/>
+      <Queen color='black' board={createNewArrayOfBoard()} position={[6,1]} />
     </div>
 
   )
