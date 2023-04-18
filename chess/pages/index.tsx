@@ -12,7 +12,8 @@ export default function Home() {
       </Head>
 
       <Board turn='White'/>
-      <Knight color='white' imgUrl='/imgs/w-knight.svg' board={createNewArrayOfBoard()} position={[7,1]}/>
+      <Knight color='white' board={createNewArrayOfBoard()} position={[7,1]}/>
+      <Knight color='black' board={createNewArrayOfBoard()} position={[7, 1]} />
     </div>
 
   )

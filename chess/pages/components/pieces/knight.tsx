@@ -3,15 +3,19 @@ import Image from "next/image"
 
 interface KnightProps {
   color: string,
-  imgUrl: string,
   board: string[][],
   position: number[]
+}
+
+interface imgUrls {
+  [key:string]:string
 }
 
 type KnightState = {
   hasMoved: boolean,
   selected?: boolean,
   potentialSpaces: (number[] | null)[],
+  imgUrls: imgUrls,
 
 }
 
@@ -21,7 +25,8 @@ class Knight extends Component<KnightProps, KnightState> {
     this.state = {
       hasMoved: false,
       selected: false,
-      potentialSpaces: [[]]
+      potentialSpaces: [[]],
+      imgUrls: { 'black': '/imgs/b-knight.svg', 'white': '/imgs/w-knight.svg'}
     }
     this.handleSelected = this.handleSelected.bind(this)
   }
@@ -62,12 +67,15 @@ class Knight extends Component<KnightProps, KnightState> {
   }
 
   render() {
-    const {color, imgUrl} = this.props
+    const {color} = this.props
+    console.log('type of color', typeof color)
+    const {imgUrls} = this.state
     console.log('states:',this.state)
+    console.log("imgUrls['color']", imgUrls[color])
     console.log('props:', this.props)
     return (
       <div onClick={this.handleSelected}>
-        <Image src={imgUrl} alt={`${color}-Knight`} width={100} height={100}/>
+        <Image src={imgUrls[color]} alt={`${color}-Knight`} width={100} height={100}/>
     </div>
   )
 }
