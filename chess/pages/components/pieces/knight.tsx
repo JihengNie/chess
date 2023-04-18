@@ -68,11 +68,7 @@ class Knight extends Component<props, state> {
 
   render() {
     const {color} = this.props
-    console.log('type of color', typeof color)
     const {imgUrls} = this.state
-    console.log('states:',this.state)
-    console.log("imgUrls['color']", imgUrls[color])
-    console.log('props:', this.props)
     return (
       <div onClick={this.handleSelected}>
         <Image src={imgUrls[color]} alt={`${color}-knight`} width={100} height={100}/>
