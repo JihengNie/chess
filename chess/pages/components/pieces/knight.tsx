@@ -67,6 +67,7 @@ class Knight extends Component<props, state> {
   }
 
   render() {
+    console.log('state', this.state)
     const {color} = this.props
     const {imgUrls} = this.state
     return (
