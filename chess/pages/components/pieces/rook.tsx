@@ -134,11 +134,11 @@ class Rook extends Component<props, state> {
   }
 
   render() {
-    console.log('state', this.state)
+    // console.log('state', this.state)
     const { color } = this.props
     const { imgUrls } = this.state
     return (
-      <div onClick={this.handleSelected}>
+      <div className="w-1/8" onClick={this.handleSelected}>
         <Image src={imgUrls[color]} alt={`${color}-rook`} width={100} height={100} />
       </div>
     )

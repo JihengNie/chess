@@ -85,8 +85,14 @@ class Board2 extends Component<BoardProps, MyState> {
   }
 
   render() {
+    const board = this.state.board?.map((item, index) => {
+      return <div className='flex' key={index}>{item}</div>
+    })
+
     return (
-      this.state.board
+      <div className='justify-between'>
+        {board}
+      </div>
     )
   }
 }

@@ -231,8 +231,8 @@ class Queen extends Component<props, state> {
   render() {
     const { color } = this.props
     const { imgUrls } = this.state
-    console.log('Props:', this.props)
-    console.log('State:', this.state)
+    // console.log('Props:', this.props)
+    // console.log('State:', this.state)
     return (
       <div onClick={this.handleSelected}>
         <Image src={imgUrls[color]} alt={`${color}-Queen`} width={100} height={100} />
